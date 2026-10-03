@@ -1,4 +1,4 @@
-import { Check, CheckCheck, Database, GitBranch, PanelsTopLeft, Plus, ArrowRight } from "lucide-react";
+import { Check, CheckCheck, Cloud, CodeXml, Database, GitBranch, PanelsTopLeft, Plus, ArrowRight, ShieldCheck, Wrench } from "lucide-react";
 import { Header, Hero, Flow, ContributionIndex, Contact } from "@/components/portfolio-interactions";
 import { contributions, education, experience, principles, toolGroups } from "@/lib/portfolio-content";
 
@@ -84,14 +84,13 @@ function Approach() {
 }
 
 function Stack() {
-  const icons = [PanelsTopLeft, Database, GitBranch, CheckCheck];
-  const uses = ["Customer experiences and guided interfaces", "Services, integrations and persistence", "Conversational workflows and recommendations", "Testing, security and delivery"];
+  const icons = { frontend: PanelsTopLeft, backend: CodeXml, data: Database, ai: GitBranch, identity: ShieldCheck, cloud: Cloud, quality: CheckCheck, tools: Wrench };
   return <section id="stack" className="section stack-section" aria-labelledby="stack-heading">
     <div className="section-container stack-layout">
       <div><h2 id="stack-heading">Tools,<br />with purpose<span className="accent-heading">.</span></h2><p className="section-description">Chosen for the work they enable.</p></div>
-      <div className="capability-ledger">{toolGroups.map((group, index) => {
-        const Icon = icons[index];
-        return <article className="capability-row" key={group.title}><Icon size={27} strokeWidth={1.5} aria-hidden="true" /><div><h3>{group.title}</h3><ul className="tool-list">{group.tools.map(tool => <li key={tool.name}>{tool.name}</li>)}</ul></div><p>{uses[index]}</p></article>;
+      <div className="capability-ledger">{toolGroups.map(group => {
+        const Icon = icons[group.id];
+        return <article className="capability-row" key={group.id}><Icon size={27} strokeWidth={1.5} aria-hidden="true" /><div><h3>{group.title}</h3><ul className="tool-list">{group.tools.map(tool => <li key={tool}>{tool}</li>)}</ul></div><p>{group.description}</p></article>;
       })}</div>
     </div>
   </section>;

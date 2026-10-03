@@ -37,11 +37,15 @@ export const principles = [
   { title: "Validate with evidence", description: "Measure behavior, test the important paths, and use real feedback to guide the next decision.", example: "Performance evaluation and production experimentation." },
 ];
 export const toolGroups = [
-  { title: "Frontend", description: "Interfaces that make complex systems approachable.", tools: [{ name: "React", symbol: "✳", color: "cyan" }, { name: "TypeScript", symbol: "TS", color: "blue" }, { name: "JavaScript", symbol: "JS", color: "gold" }, { name: "HTML / CSS", symbol: "</>", color: "orange" }] },
-  { title: "Backend & Data", description: "Services, integrations, and dependable persistence.", tools: [{ name: "Python", symbol: "Py", color: "gold" }, { name: "FastAPI", symbol: "ϟ", color: "teal" }, { name: "PostgreSQL", symbol: "Pg", color: "blue" }, { name: "SQLAlchemy", symbol: "SA", color: "coral" }, { name: "Node.js", symbol: "N", color: "green" }, { name: "Java", symbol: "J", color: "orange" }] },
-  { title: "Applied AI", description: "Useful intelligence, grounded in real workflows.", tools: [{ name: "LangGraph", symbol: "LG", color: "teal" }, { name: "LLM agents", symbol: "AI", color: "amber" }, { name: "TF-IDF", symbol: "Tf", color: "cyan" }, { name: "DistilBERT", symbol: "DB", color: "violet" }] },
-  { title: "Quality & Delivery", description: "Confidence from development through production.", tools: [{ name: "Docker", symbol: "D", color: "blue" }, { name: "Git", symbol: "G", color: "orange" }, { name: "Jenkins", symbol: "J", color: "coral" }, { name: "Jest", symbol: "Jt", color: "coral" }, { name: "Cypress", symbol: "Cy", color: "teal" }, { name: "Snyk", symbol: "S", color: "violet" }] },
-];
+  { id: "frontend", title: "Frontend & Mobile", description: "Customer interfaces, state management and native-to-web integration.", tools: ["React", "TypeScript", "JavaScript", "HTML / CSS", "Redux", "Context API", "Firebase Cloud Messaging", "Capacitor"] },
+  { id: "backend", title: "Backend & Languages", description: "Services, API integration and application logic.", tools: ["Python", "FastAPI", "SQLAlchemy", "Node.js", "Express.js", "Java", "C++", "REST APIs"] },
+  { id: "data", title: "Data & Messaging", description: "Persistence, caching, event streams and search.", tools: ["PostgreSQL", "MySQL", "MongoDB", "Redis", "Kafka", "Elasticsearch"] },
+  { id: "ai", title: "Applied AI", description: "ML model serving, conversational workflows and recommendations.", tools: ["LangGraph", "LLM agents", "TF-IDF", "DistilBERT"] },
+  { id: "identity", title: "Identity & Integrations", description: "Single sign-on, authentication and directory integration.", tools: ["Azure AD", "MSAL", "Microsoft Graph"] },
+  { id: "cloud", title: "Cloud & Deployment", description: "Cloud hosting, containers, reverse proxies and CI/CD.", tools: ["Google Cloud Platform (GCP)", "AWS", "Docker", "nginx", "Jenkins"] },
+  { id: "quality", title: "Testing & Quality", description: "Unit, integration, end-to-end and performance testing; security scanning.", tools: ["Jest", "JUnit", "Cypress", "k6", "Unit & integration testing", "Performance testing", "Snyk"] },
+  { id: "tools", title: "Developer Tools", description: "Version control, API tooling and development environments.", tools: ["Git", "GitHub", "Postman", "Chrome extensions", "VS Code", "IntelliJ", "Xcode"] },
+] as const;
 
 export const education = [
   { degree: "Master of Business Administration (MBA)", concentration: "Concentration in Data Analytics", school: "Louisiana State University Shreveport", dates: "July 2026 — Present" },

@@ -51,6 +51,8 @@ The check serves the actual exported files under `/personal-website/` and tests 
 
 The page follows Hero → Work → Experience & Education → Approach → Toolkit → Contact. Enterprise AI workflows and the 2025 engagement analytics improvements receive equal featured space, with conversational commerce and developer tooling retained below. The analytics story covers React event deduplication, tracking consolidation, and interface refactoring, with qualitative outcomes grounded in the supplied accomplishments. Diagrams are illustrative explanations, not screenshots of Lowe’s products. Contribution details expand independently in the page for comparison.
 
+The toolkit includes the public technologies in the résumé and accomplishment sheets, organized into Frontend & Mobile, Backend & Languages, Data & Messaging, Applied AI, Identity & Integrations, Cloud & Deployment, Testing & Quality, and Developer Tools. Each group owns its description and stable identifier in `lib/portfolio-content.ts`; the page maps icons by identifier. Employer-specific platform names remain omitted.
+
 Motion is limited to a short hero entrance, restrained artwork parallax, explanatory connectors, and responsive controls. Keyboard navigation and reduced-motion preferences keep interactions immediate. The design review, six concept images, and unused original artwork are retained locally in ignored `.sites-runtime/archive`; critique snapshots are ignored in `.impeccable`. Neither directory is published or committed.
 
 For ordinary local development, use `npm run dev` without setting `NEXT_PUBLIC_BASE_PATH`. The separate Sites identity remains recorded in `.openai/hosting.json`.

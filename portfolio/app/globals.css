@@ -20,7 +20,7 @@
   --font-sans: "Manrope", "Helvetica Neue", Arial, sans-serif;
   --font-mono: "SFMono-Regular", Consolas, monospace;
 }
-@font-face { font-family: Manrope; src: url('/fonts/manrope-variable.ttf') format('truetype'); font-weight: 200 800; font-display: swap; }
+@font-face { font-family: Manrope; src: url('../public/fonts/manrope-variable.ttf') format('truetype'); font-weight: 200 800; font-display: swap; }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 105px; }
 body { margin: 0; background: var(--background); color: var(--foreground); font-family: "Manrope", "Helvetica Neue", Arial, sans-serif; font-size: 1rem; -webkit-font-smoothing: antialiased; }

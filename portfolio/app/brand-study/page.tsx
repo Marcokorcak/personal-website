@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Logo Directions — Marco Korcak",
   description: "Eight vector logo directions to compare for Marco Korcak’s portfolio.",
   robots: { index: false, follow: false },
+  alternates: { canonical: "https://marcokorcak.github.io/personal-website/brand-study/" },
 };
 
 export default function BrandStudy() {

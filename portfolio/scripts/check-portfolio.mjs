@@ -27,7 +27,7 @@ try {
     await page.screenshot({ path: `${destination}/desktop-${id}.png` });
   }
   await page.locator('#contribution-0').scrollIntoViewIfNeeded();
-  await page.getByRole('button', { name: 'Read details: Turning complex operations into guided workflows.' }).click();
+  await page.getByRole('button', { name: 'View contribution: Turning complex operations into guided workflows.' }).click();
   const dialog = page.getByRole('dialog');
   await dialog.waitFor();
   await assert.equal(await dialog.getByRole('heading', { name: 'Engineering decisions' }).count(), 1);

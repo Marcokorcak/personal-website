@@ -74,13 +74,62 @@ function Hero() {
 function Experience() {
   return <section id="experience" className="section experience-section" aria-labelledby="experience-heading"><div className="section-container experience-layout"><Reveal className="experience-intro"><Label number="02">THE JOURNEY</Label><h2 id="experience-heading">Built through<br /><span className="muted-heading">real experience.</span></h2><p className="section-description">From customer-facing interfaces to intelligent enterprise systems. A growing scope, with the same focus on making software useful.</p><div className="education-list" aria-label="Education">{education.map(degree => <div className="education-note" key={degree.degree}><span className="education-symbol" aria-hidden="true">⌘</span><div><strong>{degree.degree}</strong>{degree.concentration && <p className="education-concentration">{degree.concentration}</p>}<p>{degree.school}<br />{degree.dates}</p></div></div>)}</div></Reveal><div className="experience-timeline">{experience.map((role, i) => <Reveal key={`${role.title}-${role.date}`} delay={i * 0.055} className={`timeline-entry ${i === 0 ? "current-role" : ""}`}><div className="timeline-node" aria-hidden="true" /><div className="role-top"><span className="role-date">{role.date}</span><span className="role-employer">{role.employer}</span></div><h3>{role.title}</h3><p className="role-team">{role.team}</p><p className="role-summary">{role.summary}</p><div className="role-tags">{role.tags.map(tag => <span key={tag}>{tag}</span>)}</div></Reveal>)}</div></div></section>;
 }
-function WorkCard({ item, index, onActive }: { item: typeof contributions[number]; index: number; onActive: (index: number) => void }) {
+function WorkCard({ item, index }: { item: typeof contributions[number]; index: number }) {
   const Icon = iconMap[item.icon as keyof typeof iconMap];
-  return <motion.article className="work-card" initial={{ opacity: 0.65 }} whileInView={{ opacity: 1 }} viewport={{ amount: 0.5 }} onViewportEnter={() => onActive(index)} transition={{ duration: 0.5 }}><div className="work-card-top"><span className="work-icon"><Icon size={24} strokeWidth={1.5} /></span><span className="meta">{item.category}</span><span className="work-year">{item.year}</span></div><div className="work-card-content"><span className="work-index">0{index + 1}</span><h3>{item.title}</h3><p>{item.summary}</p><div className="work-tags">{item.tags.map(tag => <span key={tag}>{tag}</span>)}</div></div><div className="work-card-footer"><span className="work-outcome"><Check size={14} />{item.outcome}</span><Dialog><DialogTrigger className="detail-button" aria-label={`Read details: ${item.title}`}><span>Behind the work</span><Plus size={17} /></DialogTrigger><DialogContent className="contribution-dialog"><div className="dialog-eyebrow"><span className="work-icon"><Icon size={22} /></span><span>{item.category} / {item.year}</span></div><DialogTitle className="contribution-title">{item.title}</DialogTitle><DialogDescription className="contribution-summary">{item.summary}</DialogDescription><div className="contribution-details">{item.details.map(detail => <div key={detail.heading}><h4>{detail.heading}</h4><p>{detail.body}</p></div>)}</div><div className="dialog-tags">{item.tags.map(tag => <span key={tag}>{tag}</span>)}</div><p className="dialog-attribution">Professional contribution at Lowe’s.</p></DialogContent></Dialog></div></motion.article>;
+  const reduced = useMotionPreference();
+  return <motion.article className="work-card" initial={reduced ? false : { opacity: 0.65 }} whileInView={{ opacity: 1 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: reduced ? 0 : 0.5 }}>
+    <div className="work-card-top"><span className="work-icon"><Icon size={24} strokeWidth={1.5} /></span><span className="meta">{item.category}</span><span className="work-year">{item.year}</span></div>
+    <div className="work-card-content">
+      <span className="work-index">0{index + 1}</span><h3>{item.title}</h3><p>{item.summary}</p>
+      <dl className="work-evidence">
+        <div><dt>My role</dt><dd>{item.role}</dd></div>
+        <div><dt>Outcome</dt><dd>{item.outcome}</dd></div>
+      </dl>
+      <div className="work-tags">{item.tags.map(tag => <span key={tag}>{tag}</span>)}</div>
+    </div>
+    <div className="work-card-footer"><Dialog>
+      <DialogTrigger className="detail-button" aria-label={`View contribution: ${item.title}`}><span>View contribution</span><Plus size={17} /></DialogTrigger>
+      <DialogContent className="contribution-dialog"><div className="dialog-eyebrow"><span className="work-icon"><Icon size={22} /></span><span>{item.category} / {item.year}</span></div><DialogTitle className="contribution-title">{item.title}</DialogTitle><DialogDescription className="contribution-summary">{item.summary}</DialogDescription><div className="contribution-details">{item.details.map(detail => <div key={detail.heading}><h4>{detail.heading}</h4><p>{detail.body}</p></div>)}</div><div className="dialog-tags">{item.tags.map(tag => <span key={tag}>{tag}</span>)}</div><p className="dialog-attribution">Professional contribution at Lowe’s.</p></DialogContent>
+    </Dialog></div>
+  </motion.article>;
 }
 function SelectedWork() {
   const [active, setActive] = useState(0);
-  return <section id="work" className="section work-section" aria-labelledby="work-heading"><div className="section-container work-layout"><div className="work-intro"><Reveal><Label number="03">SELECTED CONTRIBUTIONS</Label><h2 id="work-heading">Complex problems.<br /><span className="accent-heading">Considered solutions.</span></h2><p className="section-description">A selection of professional work across full-stack engineering and applied AI, delivered in 2025 and 2026.</p></Reveal><div className="work-navigation" aria-label="Contribution index">{contributions.map((item, i) => <a href={`#contribution-${i}`} key={item.title} className={active === i ? "active" : ""}><span className="work-nav-number">0{i + 1}</span><span>{item.shortTitle}</span><span className="work-nav-line" /></a>)}</div><div className="work-caption"><span className="meta">THE COMMON THREAD</span><p>Own the system.<br />Understand the user.<br />Make the complexity disappear.</p></div></div><div className="work-stories">{contributions.map((item, i) => <div id={`contribution-${i}`} className="work-anchor" key={item.title}><WorkCard item={item} index={i} onActive={setActive} /></div>)}</div></div></section>;
+  const ref = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const section = ref.current;
+    if (!section) return;
+    const cards = [...section.querySelectorAll<HTMLElement>(".work-anchor")];
+    let frame = 0;
+    const update = () => {
+      // Follow the card at the reading position, rather than the latest card
+      // entering the viewport. This works while scrolling in either direction.
+      const readingPosition = window.innerHeight * 0.38;
+      let closest = 0;
+      let distance = Infinity;
+      cards.forEach((card, index) => {
+        const { top, bottom } = card.getBoundingClientRect();
+        const nextDistance = Math.max(top - readingPosition, readingPosition - bottom, 0);
+        if (nextDistance < distance) { closest = index; distance = nextDistance; }
+      });
+      setActive(closest);
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(() => { update(); frame = 0; });
+    };
+    const observer = new ResizeObserver(schedule);
+    observer.observe(section);
+    update();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+  return <section id="work" ref={ref} className="section work-section" aria-labelledby="work-heading"><div className="section-container work-layout"><div className="work-intro"><Reveal><Label number="03">SELECTED CONTRIBUTIONS</Label><h2 id="work-heading">Complex problems.<br /><span className="accent-heading">Considered solutions.</span></h2><p className="section-description">A selection of professional work across full-stack engineering and applied AI, delivered in 2025 and 2026.</p></Reveal><nav className="work-navigation" aria-label="Contribution index">{contributions.map((item, i) => <a href={`#contribution-${i}`} key={item.title} aria-current={active === i ? "location" : undefined} className={active === i ? "active" : ""}><span className="work-nav-number">0{i + 1}</span><span>{item.shortTitle}</span><span className="work-nav-line" /></a>)}</nav><div className="work-caption"><span className="meta">THE COMMON THREAD</span><p>Own the system.<br />Understand the user.<br />Make the complexity disappear.</p></div></div><div className="work-stories">{contributions.map((item, i) => <div id={`contribution-${i}`} className="work-anchor" key={item.title}><WorkCard item={item} index={i} /></div>)}</div></div></section>;
 }
 function Approach() {
   const ref = useRef<HTMLElement>(null);

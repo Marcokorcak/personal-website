@@ -15,6 +15,7 @@ Requires Node.js 22.13 or newer. Install with `npm ci`, then run `npm run dev`. 
 - `lib/portfolio-content.ts`: experience, professional contributions, approach, and technology groups.
 - `components/brand-mark.tsx`: eight vector logo directions. Compare them at `/brand-study`; preview an option with `/?mark=architectural` (or another option ID).
 - `public/images`: three original artworks generated with the built-in image generation tool, optimized as JPEGs. Exact prompts are retained in `docs/artwork-prompts.json`.
+- `scripts/generate-brand-assets.mjs`: renders the existing artwork, local font, and editorial MK mark into the committed social preview and PNG icons. Run with `node scripts/generate-brand-assets.mjs` when changing the brand.
 
 Contact destinations are the provided résumé's email and LinkedIn profile. No location, time, contact form, personal-project gallery, tracking service, or fabricated performance metrics are included.
 
@@ -41,6 +42,6 @@ NEXT_PUBLIC_BASE_PATH=/personal-website npm run build:pages
 npm run check:pages
 ```
 
-The check serves the actual exported files under `/personal-website/` and tests them in a browser, including assets, interactive contribution dialogs, and logo gallery navigation. It requires Google Chrome on macOS or Playwright Chromium on other platforms.
+The check serves the actual exported files under `/personal-website/` and tests them in a browser, including assets, contribution ownership/outcomes, reading-position navigation while scrolling in both directions, responsive layouts, interactive dialogs, logo gallery navigation, and the share image/metadata/icons. It requires Google Chrome on macOS or Playwright Chromium on other platforms.
 
 For ordinary local development, use `npm run dev` without setting `NEXT_PUBLIC_BASE_PATH`. The separate Sites identity remains recorded in `.openai/hosting.json`.

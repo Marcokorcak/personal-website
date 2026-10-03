@@ -21,6 +21,10 @@
 # misc
 .DS_Store
 *.pem
+*.key
+*.p12
+*.pfx
+*.tsbuildinfo
 
 # debug
 npm-debug.log*
@@ -44,3 +48,4 @@ next-env.d.ts
 /.codex/
 /outputs/
 /work/
+/.impeccable/

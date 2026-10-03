@@ -1,90 +1,13 @@
 import { chromium } from '@playwright/test';
-import { mkdirSync, writeFileSync } from 'node:fs';
-import assert from 'node:assert/strict';
-const destination = '.sites-runtime/qa';
-mkdirSync(destination, { recursive: true });
-const browser = await chromium.launch({ executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', headless: true });
-const errors = [];
-const results = [];
+import { checkPortfolio } from './portfolio-browser-checks.mjs';
+
+const browser = await chromium.launch({
+  ...(process.platform === 'darwin' ? { executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' } : {}),
+  headless: true,
+});
 try {
-  const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
-  const page = await context.newPage();
-  page.on('pageerror', error => errors.push(error.message));
-  page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
-  const response = await page.goto('http://127.0.0.1:5173/', { waitUntil: 'networkidle' });
-  assert.equal(response.status(), 200);
-  await page.locator('h1').waitFor();
-  await page.evaluate(() => document.fonts.ready);
-  await page.waitForTimeout(1000);
-  assert.equal(await page.locator('h1').count(), 1);
-  assert.equal(await page.locator('section').count(), 6);
-  assert.equal(await page.locator('.work-card').count(), 4);
-  const imageStatus = await page.locator('img').evaluateAll(images => images.map(i => ({ src: i.src, loaded: i.complete && i.naturalWidth > 0 })));
-  await page.screenshot({ path: `${destination}/desktop-hero.png` });
-  for (const id of ['experience','work','approach','stack','contact']) {
-    await page.locator(`#${id}`).scrollIntoViewIfNeeded();
-    await page.waitForTimeout(800);
-    await page.screenshot({ path: `${destination}/desktop-${id}.png` });
-  }
-  await page.locator('#contribution-0').scrollIntoViewIfNeeded();
-  await page.getByRole('button', { name: 'View contribution: Turning complex operations into guided workflows.' }).click();
-  const dialog = page.getByRole('dialog');
-  await dialog.waitFor();
-  await assert.equal(await dialog.getByRole('heading', { name: 'Engineering decisions' }).count(), 1);
-  await page.keyboard.press('Escape');
-  await dialog.waitFor({ state: 'hidden' });
-  results.push('Contribution details open and close with Escape');
-  const resume = await context.request.get('http://127.0.0.1:5173/Marco-Korcak-Resume.pdf');
-  assert.equal(resume.status(), 404);
-  assert.equal(await page.locator('a[download]').count(), 0);
-  assert.equal(await page.getByText('WHERE I WORK', { exact: true }).count(), 0);
-  assert.equal(await page.locator('.current-role h3').textContent(), 'Software Engineer');
-  assert.equal(await page.getByText('Louisiana State University Shreveport').count(), 1);
-  results.push('Résumé file and download links removed; current title and MBA verified');
-  const mail = await page.locator('.contact-link').first().getAttribute('href');
-  assert.equal(mail, 'mailto:Marcokorcak02@gmail.com');
-  await context.grantPermissions(['clipboard-read','clipboard-write']);
-  await page.locator('#contact').scrollIntoViewIfNeeded();
-  await page.getByRole('button',{name:'Copy email address'}).click();
-  await page.getByText('Email copied', { exact: true }).waitFor();
-  assert.equal(await page.evaluate(() => navigator.clipboard.readText()), 'Marcokorcak02@gmail.com');
-  assert.equal(await page.locator('.contact-link').nth(1).getAttribute('href'), 'https://www.linkedin.com/in/marco-korcak/');
-  results.push('Email, LinkedIn, and clipboard controls checked');
-  for (const width of [1440, 1024, 768, 390, 320]) {
-    await page.setViewportSize({ width, height: 900 });
-    await page.goto('http://127.0.0.1:5173/', { waitUntil: 'networkidle' });
-    await page.waitForTimeout(600);
-    const overflow = await page.evaluate(() => ({ width: innerWidth, scroll: document.documentElement.scrollWidth }));
-    assert(overflow.scroll <= overflow.width + 1, `${width}px has overflow: ${JSON.stringify(overflow)}`);
-    if (width === 390) {
-      await page.screenshot({ path: `${destination}/mobile-hero.png` });
-      await page.getByRole('button', { name: 'Open navigation' }).click();
-      await page.getByRole('dialog').waitFor();
-      await page.getByRole('navigation', { name: 'Mobile navigation' }).getByRole('link', { name: '03 Work' }).click();
-      await page.getByRole('dialog').waitFor({ state: 'hidden' });
-      await page.waitForTimeout(800);
-      await page.screenshot({ path: `${destination}/mobile-work.png` });
-      results.push('Mobile navigation opens, navigates, and closes');
-    }
-    results.push(`No horizontal overflow at ${width}px`);
-  }
-  await page.setViewportSize({ width: 1440, height: 1200 });
-  await page.goto('http://127.0.0.1:5173/brand-study', { waitUntil: 'networkidle' });
-  assert.equal(await page.locator('.brand-option').count(), 8);
-  await page.screenshot({ path: `${destination}/logo-options.png`, fullPage: true });
-  await page.getByRole('link', { name: 'Preview in the header' }).nth(1).click();
-  await page.locator('.header-brand .brand-mark-architectural').waitFor();
-  results.push('Eight logo options and header preview checked');
-  await page.setViewportSize({ width: 320, height: 900 });
-  await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('http://127.0.0.1:5173/', { waitUntil: 'networkidle' });
-  assert.equal(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior), 'auto');
-  await page.evaluate(() => document.documentElement.style.fontSize = '32px');
-  assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'Overflow at enlarged text size');
-  await page.screenshot({ path: `${destination}/enlarged-text.png` });
-  results.push('Reduced motion and 200% text size checked');
-  const finalImages = await page.locator('img').evaluateAll(images => images.map(i => ({ src: i.getAttribute('src'), loaded: i.complete && i.naturalWidth > 0 })));
-  assert.equal(errors.length, 0, `Browser errors: ${errors.join('\n')}`);
-  writeFileSync(`${destination}/results.json`, JSON.stringify({ results, errors, initialImages: imageStatus, finalImages }, null, 2));
-  console.log(JSON.stringify({ results, errors }, null, 2));
-} finally { await browser.close(); }
+  const page = await browser.newPage();
+  await checkPortfolio(page, process.env.PORTFOLIO_PREVIEW_URL ?? 'http://127.0.0.1:5173/');
+} finally {
+  await browser.close();
+}

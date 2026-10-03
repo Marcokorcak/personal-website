@@ -38,6 +38,8 @@ jobs:
         run: |
           test -s out/index.html
           test -s out/brand-study/index.html
+      - name: Check public content for credentials and private files
+        run: npm run check:public
       - name: Upload built website
         uses: actions/upload-pages-artifact@v4
         with:

@@ -1,0 +1,16 @@
+{
+  "generator": "Built-in image_gen",
+  "assets": [
+    {
+      "file": "public/images/workflow-hero.jpg",
+      "responsive": "public/images/workflow-hero-960.jpg",
+      "prompt": "Generate a cinematic horizontal 16:9 photographic 3D artwork for the background of Marco Korcak's dark editorial software engineering portfolio. Match near-black green charcoal #0b0f0e with warm copper amber and subtle ivory reflections. Beautiful smoked-glass architectural workflow planes connected by a few finely controlled amber paths: a large translucent interface-like plane to the lower left, interconnected flat workflow planes in lower middle, orderly glass system layers lower right. Physical materials, compelling reflection and believable subtle depth, sophisticated cinematic lighting, no neon cyberpunk. The TOP 55% must be nearly empty smooth near-black negative space for centered website title and description to be added in code. Keep lower-third subject bold at mobile crops; no readable text, typography, symbols, mountains, branded UI, numbers, logos, screenshots, borders or browser frame. Full bleed image, not a website mockup. Restrained light rather than glow effects. Glass geometry is the art subject."
+    },
+    {
+      "file": "public/images/glass-connection.jpg",
+      "responsive": "public/images/glass-connection-960.jpg",
+      "prompt": "Create one horizontal 16:9 cinematic macro photographic 3D artwork for a sophisticated software engineer portfolio contact background. Close-up of exactly two tactile smoked-glass surfaces connecting via a short elegant warm amber glass bridge. Compose the glass connection toward the RIGHT HALF with nearly black #0b0f0e negative space filling the entire left half for live website copy. Black-green charcoal and copper amber palette, warm soft reflections, physical material and polished editorial lighting, quiet premium atmosphere, no giant Earth, no geographical map, no mountains, no typography, letters, numbers, UI, logos, browser frame or buttons. Full bleed photographic background artwork, not a website screenshot."
+    }
+  ],
+  "optimization": "JPEG quality 85; responsive 960px variants; EXIF, IPTC, XMP and comment metadata removed without changing compressed pixel data. Originals retained locally outside the runtime bundle."
+}

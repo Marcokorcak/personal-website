@@ -6,7 +6,7 @@ const socialImage = {
   url: `${portfolioUrl}images/social-preview.png`,
   width: 1200,
   height: 630,
-  alt: "Marco Korcak — Software Engineer. Full-stack engineering and applied AI, with the editorial MK mark and an amber-lit workstation.",
+  alt: "Marco Korcak — Software Engineer. Full-stack engineering and applied AI, with the editorial MK mark and amber glass workflow artwork.",
 };
 export const metadata: Metadata = {
   metadataBase: new URL(portfolioUrl),

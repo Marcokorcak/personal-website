@@ -1,0 +1,7 @@
+# Keep credentials and machine-local artifacts out of the repository at any depth.
+.env*
+*.pem
+*.key
+*.p12
+*.pfx
+.DS_Store

@@ -5,7 +5,7 @@ import { chromium } from '@playwright/test';
 // Commit these files; deployment never needs a browser to regenerate them.
 const [font, artwork, mark] = await Promise.all([
   readFile('public/fonts/manrope-variable.ttf'),
-  readFile('public/images/workstation.jpg'),
+  readFile('public/images/workflow-hero.jpg'),
   readFile('public/favicon.svg'),
 ]);
 const browser = await chromium.launch({
@@ -24,7 +24,7 @@ try {
     .identity { position: absolute; top: 61px; left: 69px; display: flex; align-items: center; gap: 18px; }
     .identity img { width: 74px; height: 74px; } .identity span { font-size: 13px; letter-spacing: .18em; color: #d2cfc3; }
     .copy { position: absolute; top: 198px; left: 76px; }
-    h1 { font-size: 73px; line-height: 1.1; letter-spacing: -.055em; font-weight: 550; margin: 0 0 25px; }
+    h1 { font-size: 73px; line-height: 1.1; letter-spacing: -.035em; font-weight: 550; margin: 0 0 25px; }
     p { margin: 0; font-size: 30px; line-height: 1.4; letter-spacing: -.025em; color: #dfe2d8; }
     p span { color: #f3ad76; }
     .footer { position: absolute; left: 76px; bottom: 61px; font-size: 13px; letter-spacing: .11em; color: #c2c6ba; }
@@ -34,7 +34,7 @@ try {
     <div class="shade"></div><div class="frame"></div>
     <div class="identity"><img src="data:image/svg+xml;base64,${mark.toString('base64')}" alt="MK" /><span>SOFTWARE ENGINEER</span></div>
     <div class="copy"><h1>Marco Korcak</h1><p>Full-stack engineering.<br /><span>Applied AI.</span></p></div>
-    <div class="footer">THOUGHTFUL SOFTWARE. REAL-WORLD IMPACT.</div>
+    <div class="footer">PROFESSIONAL CONTRIBUTIONS / 2025–2026</div>
   </div></body></html>`);
   await page.evaluate(async () => { await document.fonts.ready; await Promise.all([...document.images].map(image => image.decode())); });
   await page.screenshot({ path: 'public/images/social-preview.png' });

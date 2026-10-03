@@ -15,7 +15,8 @@
     "db:generate": "drizzle-kit generate",
     "check:types": "tsc --noEmit",
     "check:browser": "node scripts/check-portfolio.mjs",
-    "check:pages": "node scripts/check-pages.mjs"
+    "check:pages": "node scripts/check-pages.mjs",
+    "check:public": "node scripts/check-public-safety.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
